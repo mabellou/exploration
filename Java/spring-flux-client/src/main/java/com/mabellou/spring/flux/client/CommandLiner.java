@@ -22,8 +22,8 @@ public class CommandLiner implements CommandLineRunner {
 		System.out.println("Begin the CommandLiner");
 
 		//this.put2();
-		//this.get();
-		this.getWebsocket();
+		this.get();
+		//this.getWebsocket();
 	}
 	
 	private void getWebsocket() {
@@ -61,14 +61,14 @@ public class CommandLiner implements CommandLineRunner {
 				 .bodyToFlux(Customer.class)
 				 .subscribe(c -> System.out.println("-- Getting Customer " + c.getLastName() + " " + c.getId()));
 		 IntStream
-		 	.range(1,10000)
+		 	.range(1,50)
 		 	.forEach(i -> {
 		 		try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-		 		System.out.println("Wait for " + i*100 + " milliseconds");
+		 		//System.out.println("Wait for " + i*100 + " milliseconds");
 		 	});
 		 
 	}
