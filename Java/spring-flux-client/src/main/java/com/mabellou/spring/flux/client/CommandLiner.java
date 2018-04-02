@@ -68,7 +68,7 @@ public class CommandLiner implements CommandLineRunner {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-		 		//System.out.println("Wait for " + i*100 + " milliseconds");
+		 		System.out.println("Wait for " + i*100 + " milliseconds");
 		 	});
 		 
 	}

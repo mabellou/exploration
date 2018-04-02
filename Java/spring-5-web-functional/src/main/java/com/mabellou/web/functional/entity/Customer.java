@@ -1,4 +1,4 @@
-package com.mabellou.web.functional;
+package com.mabellou.web.functional.entity;
 
 import org.springframework.data.annotation.Id;
 

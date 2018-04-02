@@ -1,7 +1,9 @@
-package com.mabellou.web.functional;
+package com.mabellou.web.functional.repository;
 
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+
+import com.mabellou.web.functional.entity.Customer;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
