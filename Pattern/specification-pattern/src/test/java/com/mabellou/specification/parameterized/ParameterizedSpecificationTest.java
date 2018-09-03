@@ -1,13 +1,14 @@
-package com.mabellou.specification;
+package com.mabellou.specification.parameterized;
 
-import com.mabellou.specification.hardcoded.IceSpecification;
-import com.mabellou.specification.hardcoded.ShoesSpecification;
-import com.mabellou.specification.parameterized.CargoSpecification;
+import com.mabellou.specification.Cargo;
+import com.mabellou.specification.Container;
+import com.mabellou.specification.composite.Specification;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-public class SpecificationTest {
+public class ParameterizedSpecificationTest {
 
 	private Container refrigeratedContainer = Container.builder()
 			.temperatureMax(-20)
@@ -20,34 +21,6 @@ public class SpecificationTest {
 			.temperatureMin(-15)
 			.isSanitaryForFood(false)
 			.build();
-
-	@Test
-	public void hardcodedSpecification_For_Cargo_Test(){
-		Specification iceSpecification = new IceSpecification();
-		Cargo iceCargo = new Cargo(iceSpecification);
-
-		boolean refrigeratedContainerResult =
-				iceCargo.getSpecification().isSatisfiedBy(refrigeratedContainer);
-		boolean shoesContainerResult =
-				iceCargo.getSpecification().isSatisfiedBy(clothingContainer);
-
-		assertTrue(refrigeratedContainerResult);
-		assertFalse(shoesContainerResult);
-	}
-
-	@Test
-	public void hardcodedSpecification_For_Shoes_Test(){
-		Specification shoesSpecification = new ShoesSpecification();
-		Cargo shoesCargo = new Cargo(shoesSpecification);
-
-		boolean refrigeratedContainerResult =
-				shoesCargo.getSpecification().isSatisfiedBy(refrigeratedContainer);
-		boolean shoesContainerResult =
-				shoesCargo.getSpecification().isSatisfiedBy(clothingContainer);
-
-		assertTrue(shoesContainerResult);
-		assertFalse(refrigeratedContainerResult);
-	}
 
 	@Test
 	public void parameterizedSpecification_For_Food_Test(){

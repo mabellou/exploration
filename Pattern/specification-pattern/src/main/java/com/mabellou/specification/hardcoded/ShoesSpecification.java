@@ -1,7 +1,7 @@
 package com.mabellou.specification.hardcoded;
 
 import com.mabellou.specification.Container;
-import com.mabellou.specification.Specification;
+import com.mabellou.specification.composite.Specification;
 
 public class ShoesSpecification implements Specification {
 

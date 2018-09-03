@@ -1,7 +1,7 @@
 package com.mabellou.specification.parameterized;
 
 import com.mabellou.specification.Container;
-import com.mabellou.specification.Specification;
+import com.mabellou.specification.composite.Specification;
 
 public class CargoSpecification implements Specification {
 
