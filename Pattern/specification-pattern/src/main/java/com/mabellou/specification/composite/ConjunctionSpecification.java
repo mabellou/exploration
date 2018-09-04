@@ -19,4 +19,27 @@ public class ConjunctionSpecification extends CompositeSpecification  {
 		return specifications.stream()
 				.allMatch(s -> s.isSatisfiedBy(container));
 	}
+
+	@Override
+	public boolean test(Container container) {
+		boolean andResult = true;
+		boolean tempResult;
+		boolean first = true;
+		System.out.println("Begin and");
+		for(Specification specification: specifications){
+			if(!first){
+				System.out.println("And");
+			}
+			first = false;
+			tempResult = specification.test(container);
+			andResult = andResult && tempResult;
+		}
+		System.out.println("End and");
+		return andResult;
+	}
+
+	@Override
+	public String write(Container container) {
+		return "And";
+	}
 }

@@ -19,4 +19,27 @@ public class DisjunctionSpecification extends CompositeSpecification {
 		return specifications.stream()
 				.anyMatch(s -> s.isSatisfiedBy(container));
 	}
+
+	@Override
+	public boolean test(Container container) {
+		boolean orResult = false;
+		boolean tempResult;
+		boolean first = true;
+		System.out.println("Begin or");
+		for(Specification specification: specifications){
+			if(!first){
+				System.out.println("Or");
+			}
+			first = false;
+			tempResult = specification.test(container);
+			orResult = orResult || tempResult;
+		}
+		System.out.println("End or");
+		return orResult;
+	}
+
+	@Override
+	public String write(Container container) {
+		return "Or";
+	}
 }

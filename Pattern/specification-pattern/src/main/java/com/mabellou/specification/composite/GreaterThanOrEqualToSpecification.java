@@ -15,4 +15,11 @@ public class GreaterThanOrEqualToSpecification extends ValueBoundSpecification {
 	public boolean isSatisfiedBy(Container container) {
 		return aSymbol.apply(container) >= aValue;
 	}
+
+	public String write(Container container) {
+		return String.format("%d isGreaterThanOrEqual %d [%s]",
+				aSymbol.apply(container),
+				aValue,
+				isSatisfiedBy(container));
+	}
 }

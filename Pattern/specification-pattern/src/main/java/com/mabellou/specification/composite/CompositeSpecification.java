@@ -1,8 +1,8 @@
 package com.mabellou.specification.composite;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import com.mabellou.specification.Container;
+
+import java.util.*;
 
 public abstract class CompositeSpecification implements Specification {
 	protected List<Specification> specifications;
@@ -21,5 +21,21 @@ public abstract class CompositeSpecification implements Specification {
 
 	public void addSpecifications(List<Specification> specifications) {
 		this.specifications.addAll(specifications);
+	}
+
+	public Set<Specification> getUnsatisfiedSpecificationsFor(final Container container) {
+		Set<Specification> unsatisfied = new HashSet<>();
+		for (Specification specification : specifications) {
+			unsatisfied.addAll(specification.getUnsatisfiedSpecificationsFor(container));
+		}
+		return Collections.unmodifiableSet(unsatisfied);
+	}
+
+	public Set<Specification> getSatisfiedSpecificationsFor(final Container container) {
+		Set<Specification> satisfied = new HashSet<>();
+		for (Specification specification : specifications) {
+			satisfied.addAll(specification.getSatisfiedSpecificationsFor(container));
+		}
+		return Collections.unmodifiableSet(satisfied);
 	}
 }

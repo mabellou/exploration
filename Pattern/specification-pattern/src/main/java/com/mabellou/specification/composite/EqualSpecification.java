@@ -14,4 +14,12 @@ public class EqualSpecification extends ValueBoundSpecification {
 	public boolean isSatisfiedBy(Container container) {
 		return aSymbol.apply(container).intValue() == aValue.intValue();
 	}
+
+	@Override
+	public String write(Container container) {
+		return String.format("%d equals %d [%s]",
+				aSymbol.apply(container),
+				aValue,
+				isSatisfiedBy(container));
+	}
 }

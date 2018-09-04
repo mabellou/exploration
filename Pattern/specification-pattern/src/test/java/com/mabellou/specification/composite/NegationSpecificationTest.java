@@ -37,4 +37,28 @@ public class NegationSpecificationTest {
 		boolean result = negationSpecification.isSatisfiedBy(refrigeratedContainer);
 		assertFalse(result);
 	}
+
+	@Test
+	public void negateSpecification_True(){
+		Specification specificationToNegate =
+				new EqualSpecification(-19, Container::getTemperatureMax);
+		Specification negationSpecification = specificationToNegate.negate();
+		boolean result = negationSpecification.isSatisfiedBy(refrigeratedContainer);
+		assertTrue(result);
+
+		specificationToNegate =
+				new EqualSpecification(-21, Container::getTemperatureMax);
+		negationSpecification = specificationToNegate.negate();
+		result = negationSpecification.isSatisfiedBy(refrigeratedContainer);
+		assertTrue(result);
+	}
+
+	@Test
+	public void negateSpecification_False(){
+		Specification specificationToNegate =
+				new EqualSpecification(-20, Container::getTemperatureMax);
+		Specification negationSpecification = specificationToNegate.negate();
+		boolean result = negationSpecification.isSatisfiedBy(refrigeratedContainer);
+		assertFalse(result);
+	}
 }

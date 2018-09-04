@@ -14,4 +14,11 @@ public class LessThanOrEqualToSpecification extends ValueBoundSpecification {
 	public boolean isSatisfiedBy(Container container) {
 		return aSymbol.apply(container) <= aValue;
 	}
+
+	public String write(Container container) {
+		return String.format("%d isLessThanOrEqual %d [%s]",
+				aSymbol.apply(container),
+				aValue,
+				isSatisfiedBy(container));
+	}
 }
