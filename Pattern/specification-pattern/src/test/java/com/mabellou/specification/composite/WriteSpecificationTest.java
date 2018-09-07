@@ -3,31 +3,79 @@ package com.mabellou.specification.composite;
 import org.junit.Test;
 
 import static com.mabellou.specification.composite.SampleDataTestCase.*;
+import static com.mabellou.specification.composite.Specification.StringFormatter.INLINE;
+import static com.mabellou.specification.composite.Specification.StringFormatter.MULTIPLE_LINE;
 import static org.junit.Assert.assertEquals;
 
 public class WriteSpecificationTest {
 
-
-
 	@Test
-	public void and_Or_Negate_Specification_True(){
-		Specification andSpecification =        IS_FALSE_1.or(IS_FALSE_2)
+	public void write_Specification_True_Inline(){
+		Specification specification =        IS_FALSE_1.or(IS_FALSE_2)
 										.and(
 												IS_TRUE_1.or(IS_TRUE_2)
 										).negate();
 
-		String result = andSpecification.getText(FOOD_CONTAINER);
-		assertEquals("!((( 20 == 19 [false] ) || ( 10 == 9 [false] )) && (( 20 == 20 [true] ) || ( 10 == 10 [true] )))", result);
+		String result = specification.toString(FOOD_CONTAINER, INLINE);
+		assertEquals("!((( 20 == 19 [=false] ) || ( 10 == 9 [=false] )) && (( 20 == 20 [=true] ) || ( 10 == 10 [=true] )))", result);
 	}
 
 	@Test
-	public void and_Or_Negate_Specification_False(){
-		Specification andSpecification =        IS_FALSE_1.or(IS_TRUE_1)
+	public void write_Specification_False_Inline(){
+		Specification specification =        IS_FALSE_1.or(IS_TRUE_1)
 										.and(
 												IS_TRUE_2.or(IS_FALSE_2)
 										).negate();
 
-		String result = andSpecification.getText(FOOD_CONTAINER);
-		assertEquals("!((( 20 == 19 [false] ) || ( 20 == 20 [true] )) && (( 10 == 10 [true] ) || ( 10 == 9 [false] )))", result);
+		String result = specification.toString(FOOD_CONTAINER, INLINE);
+		assertEquals("!((( 20 == 19 [=false] ) || ( 20 == 20 [=true] )) && (( 10 == 10 [=true] ) || ( 10 == 9 [=false] )))", result);
+	}
+
+	@Test
+	public void write_Specification_True_MultipleLine(){
+		Specification specification =        IS_FALSE_1.or(IS_FALSE_2)
+									.and(
+											IS_TRUE_1.or(IS_TRUE_2)
+									).negate();
+
+		String result = specification.toString(FOOD_CONTAINER, MULTIPLE_LINE);
+		assertEquals("Negation of false [=true]" + System.lineSeparator() +
+				"Begin and " + System.lineSeparator() +
+				"Begin or" + System.lineSeparator() +
+				" 20 == 19 [=false] " + System.lineSeparator() +
+				"Or" + System.lineSeparator() +
+				" 10 == 9 [=false] " + System.lineSeparator() +
+				"End or [=false]" + System.lineSeparator() +
+				"And" + System.lineSeparator() +
+				"Begin or" + System.lineSeparator() +
+				" 20 == 20 [=true] " + System.lineSeparator() +
+				"Or" + System.lineSeparator() +
+				" 10 == 10 [=true] " + System.lineSeparator() +
+				"End or [=true]" + System.lineSeparator() +
+				"End and [=false]" + System.lineSeparator(), result);
+	}
+
+	@Test
+	public void write_Specification_False_MultipleLine(){
+		Specification specification =        IS_FALSE_1.or(IS_TRUE_1)
+									.and(
+											IS_TRUE_2.or(IS_FALSE_2)
+									).negate();
+
+		String result = specification.toString(FOOD_CONTAINER, MULTIPLE_LINE);
+		assertEquals("Negation of true [=false]" + System.lineSeparator() +
+				"Begin and " + System.lineSeparator() +
+				"Begin or" + System.lineSeparator() +
+				" 20 == 19 [=false] " + System.lineSeparator() +
+				"Or" + System.lineSeparator() +
+				" 20 == 20 [=true] " + System.lineSeparator() +
+				"End or [=true]" + System.lineSeparator() +
+				"And" + System.lineSeparator() +
+				"Begin or" + System.lineSeparator() +
+				" 10 == 10 [=true] " + System.lineSeparator() +
+				"Or" + System.lineSeparator() +
+				" 10 == 9 [=false] " + System.lineSeparator() +
+				"End or [=true]" + System.lineSeparator() +
+				"End and [=true]" + System.lineSeparator(), result);
 	}
 }

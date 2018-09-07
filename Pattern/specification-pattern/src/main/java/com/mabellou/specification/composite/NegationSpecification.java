@@ -29,6 +29,10 @@ public class NegationSpecification implements Specification {
 		return !specificationToNegate.test(container);
 	}
 
+	public boolean isSatisfiedBy(Container container) {
+		return !specificationToNegate.isSatisfiedBy(container);
+	}
+
 	@Override
 	public Set<Specification> getUnsatisfiedSpecificationsFor(final Container container) {
 		Set<Specification> unsatisfied = new HashSet<>();
@@ -60,7 +64,7 @@ public class NegationSpecification implements Specification {
 			case INLINE:
 				return "!(" + specificationToNegate.toString(container, INLINE) + ")";
 			case MULTIPLE_LINE:
-				return this.toString(container) + specificationToNegate.toString(container, MULTIPLE_LINE);
+				return this.toString(container) + System.lineSeparator() + specificationToNegate.toString(container, MULTIPLE_LINE);
 			default:
 				throw new NotImplementedException();
 		}
@@ -68,9 +72,9 @@ public class NegationSpecification implements Specification {
 
 	private String toString(Container container) {
 		String nameToDisplay = name.equals("") ? name : (name + " : ");
-		return String.format("%s : Negation of %s [=%s]",
+		return String.format("%sNegation of %s [=%s]",
 				nameToDisplay,
-				specificationToNegate.test(container),
-				test(container));
+				specificationToNegate.isSatisfiedBy(container),
+				isSatisfiedBy(container));
 	}
 }

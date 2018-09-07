@@ -5,11 +5,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Set;
 
-//TODO well formated name
-//TODO change output string
 //TODO generics
 public interface Specification {
 	boolean test(Container container);
+	boolean isSatisfiedBy(Container container);
 
 	default Specification and(Specification andSpecification){
 		return ConjunctionSpecification.of(this, andSpecification);

@@ -1,8 +1,12 @@
 package com.mabellou.specification.composite;
 
 import com.mabellou.specification.Container;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
+
+import static com.mabellou.specification.composite.Specification.StringFormatter.INLINE;
+import static com.mabellou.specification.composite.Specification.StringFormatter.MULTIPLE_LINE;
 
 public class DisjunctionSpecification extends CompositeSpecification {
 
@@ -12,6 +16,11 @@ public class DisjunctionSpecification extends CompositeSpecification {
 
 	public static DisjunctionSpecification of(Specification... specifications){
 		return new DisjunctionSpecification(specifications);
+	}
+
+	@Override
+	public boolean isSatisfiedBy(Container container) {
+		return specifications.stream().anyMatch(s -> s.isSatisfiedBy(container));
 	}
 
 	@Override
@@ -43,7 +52,18 @@ public class DisjunctionSpecification extends CompositeSpecification {
 	}
 
 	@Override
-	public String getText(Container container) {
+	public String toString(Container container, StringFormatter formatter) {
+		switch (formatter) {
+			case INLINE:
+				return toStringInline(container);
+			case MULTIPLE_LINE:
+				return toStringMultipleLine(container);
+			default:
+				throw new NotImplementedException();
+		}
+	}
+
+	private String toStringInline(Container container) {
 		StringBuilder text = new StringBuilder();
 		boolean first = true;
 		for(Specification specification: specifications){
@@ -52,14 +72,28 @@ public class DisjunctionSpecification extends CompositeSpecification {
 			}
 			first = false;
 			text.append("(");
-			text.append(specification.getText(container));
+			text.append(specification.toString(container, INLINE));
 			text.append(")");
 		}
 		return text.toString();
 	}
 
-	@Override
-	public String write(Container container) {
-		return "Or";
+	private String toStringMultipleLine(Container container) {
+		StringBuilder text = new StringBuilder();
+		boolean orResult = false;
+		boolean tempResult;
+		boolean first = true;
+		text.append("Begin or").append(name).append(System.lineSeparator());
+		for(Specification specification: specifications){
+			if(!first){
+				text.append("Or").append(System.lineSeparator());
+			}
+			first = false;
+			tempResult = specification.isSatisfiedBy(container);
+			text.append(specification.toString(container, MULTIPLE_LINE));
+			orResult = orResult || tempResult;
+		}
+		text.append(String.format("End or [=%s]", orResult)).append(System.lineSeparator());
+		return text.toString();
 	}
 }

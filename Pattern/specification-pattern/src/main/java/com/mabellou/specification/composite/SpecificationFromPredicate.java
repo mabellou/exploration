@@ -7,16 +7,17 @@ import java.util.function.Predicate;
 public class SpecificationFromPredicate extends LeafSpecification {
 	private Predicate<Container> predicate;
 
-	private SpecificationFromPredicate(Predicate<Container> predicate) {
+	private SpecificationFromPredicate(Predicate<Container> predicate, String name) {
 		this.predicate = predicate;
+		this.name = name;
 	}
 
-	public static SpecificationFromPredicate of(Predicate<Container> predicate){
-		return new SpecificationFromPredicate(predicate);
+	public static SpecificationFromPredicate of(Predicate<Container> predicate, String name){
+		return new SpecificationFromPredicate(predicate, name);
 	}
 
 	@Override
-	protected boolean isSatisfiedBy(Container container) {
+	public boolean isSatisfiedBy(Container container) {
 		return predicate.test(container);
 	}
 

@@ -11,21 +11,19 @@ public class SpecificationFromPredicateTest {
 
 
 	@Test
-	public void fromPredicateTest_True() throws Exception {
+	public void fromPredicateTest_True(){
 		Specification fromPredicate =
 				SpecificationFromPredicate
-						.of(container -> container.getTemperatureMax() == 20)
-						.withName("name");
+						.of(container -> container.getTemperatureMax() == 20, "name");
 		assertThat(fromPredicate.isSatisfiedBy(FOOD_CONTAINER), is(true));
 		assertThat(fromPredicate.getName(), is("name"));
 	}
 
 	@Test
-	public void fromPredicateTest_False() throws Exception {
+	public void fromPredicateTest_False(){
 		Specification fromPredicate =
 				SpecificationFromPredicate
-						.of(container -> container.getTemperatureMax() == 21)
-						.withName("name");
+						.of(container -> container.getTemperatureMax() == 21, "name");
 		assertThat(fromPredicate.isSatisfiedBy(FOOD_CONTAINER), is(false));
 		assertThat(fromPredicate.getName(), is("name"));
 	}

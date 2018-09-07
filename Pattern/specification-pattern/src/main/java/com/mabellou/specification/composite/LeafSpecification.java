@@ -9,13 +9,13 @@ import java.util.Set;
 public abstract class LeafSpecification implements Specification {
 	protected String name = "";
 
-	protected abstract boolean isSatisfiedBy(Container container);
-
 	@Override
 	public final boolean test(Container container){
 		System.out.println(this.toString(container));
 		return this.isSatisfiedBy(container);
 	}
+
+	public abstract boolean isSatisfiedBy(Container container);
 
 	@Override
 	public Set<Specification> getUnsatisfiedSpecificationsFor(final Container container) {
@@ -52,7 +52,7 @@ public abstract class LeafSpecification implements Specification {
 	public String toString(Container container, StringFormatter formatter) {
 		switch (formatter){
 			case INLINE: return this.toString(container);
-			case MULTIPLE_LINE: return this.toString(container);
+			case MULTIPLE_LINE: return this.toString(container) + System.lineSeparator();
 			default: throw new NotImplementedException();
 		}
 	}
