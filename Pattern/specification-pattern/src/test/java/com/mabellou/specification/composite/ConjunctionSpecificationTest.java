@@ -1,61 +1,44 @@
 package com.mabellou.specification.composite;
 
-import com.mabellou.specification.Container;
 import org.junit.Test;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static com.mabellou.specification.composite.SampleDataTestCase.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ConjunctionSpecificationTest {
 
-	private Container refrigeratedContainer = Container.builder()
-			.temperatureMax(-20)
-			.temperatureMin(-30)
-			.isSanitaryForFood(true)
-			.build();
+
 
 	@Test
 	public void conjunctionSpecification_True_True(){
-		Specification equalSpecificationMax =
-				new EqualSpecification(-20, Container::getTemperatureMax);
-		Specification equalSpecificationMin =
-				new EqualSpecification(-30, Container::getTemperatureMin);
-
 		Specification conjunctionSpecification =
-				new ConjunctionSpecification(Arrays.asList(equalSpecificationMax, equalSpecificationMin));
+				ConjunctionSpecification.of(IS_TRUE_1, IS_TRUE_2);
 
-		boolean result = conjunctionSpecification.isSatisfiedBy(refrigeratedContainer);
+		boolean result = conjunctionSpecification.isSatisfiedBy(FOOD_CONTAINER);
 
 		assertTrue(result);
 	}
 
 	@Test
 	public void conjunctionSpecification_True_False(){
-		Specification equalSpecificationMax =
-				new EqualSpecification(-20, Container::getTemperatureMax);
-		Specification equalSpecificationMin =
-				new EqualSpecification(-31, Container::getTemperatureMax);
 
 		Specification conjunctionSpecification =
-				new ConjunctionSpecification(Arrays.asList(equalSpecificationMax, equalSpecificationMin));
+				ConjunctionSpecification.of(IS_TRUE_1, IS_FALSE_1);
 
-		boolean result = conjunctionSpecification.isSatisfiedBy(refrigeratedContainer);
+		boolean result = conjunctionSpecification.isSatisfiedBy(FOOD_CONTAINER);
 
 		assertFalse(result);
 	}
 
 	@Test
 	public void conjunctionSpecification_False_False(){
-		Specification equalSpecificationMax =
-				new EqualSpecification(-21, Container::getTemperatureMax);
-		Specification equalSpecificationMin =
-				new EqualSpecification(-31, Container::getTemperatureMax);
-
 		Specification conjunctionSpecification =
-				new ConjunctionSpecification(Arrays.asList(equalSpecificationMax, equalSpecificationMin));
+				ConjunctionSpecification.of(IS_FALSE_1, IS_FALSE_2);
 
-		boolean result = conjunctionSpecification.isSatisfiedBy(refrigeratedContainer);
+		boolean result = conjunctionSpecification.isSatisfiedBy(FOOD_CONTAINER);
 
 		assertFalse(result);
 	}

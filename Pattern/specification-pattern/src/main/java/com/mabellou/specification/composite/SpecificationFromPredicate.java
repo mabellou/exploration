@@ -4,22 +4,24 @@ import com.mabellou.specification.Container;
 
 import java.util.function.Predicate;
 
-public class SpecificationFromPredicate implements LeafSpecification {
+public class SpecificationFromPredicate extends LeafSpecification {
 	private Predicate<Container> predicate;
-	private String name;
 
-	public SpecificationFromPredicate(Predicate<Container> predicate, String name) {
+	private SpecificationFromPredicate(Predicate<Container> predicate) {
 		this.predicate = predicate;
-		this.name = name;
+	}
+
+	public static SpecificationFromPredicate of(Predicate<Container> predicate){
+		return new SpecificationFromPredicate(predicate);
 	}
 
 	@Override
-	public boolean isSatisfiedBy(Container container) {
+	protected boolean isSatisfiedBy(Container container) {
 		return predicate.test(container);
 	}
 
 	@Override
-	public String write(Container container) {
+	public String toString(Container container) {
 		return name + " is " + isSatisfiedBy(container);
 	}
 }

@@ -1,79 +1,52 @@
 package com.mabellou.specification.composite;
 
-import com.mabellou.specification.Container;
 import org.junit.Test;
 
+import static com.mabellou.specification.composite.SampleDataTestCase.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class ValueBoundSpecificationTest {
 
-	private Container refrigeratedContainer = Container.builder()
-			.temperatureMax(-20)
-			.temperatureMin(-30)
-			.isSanitaryForFood(true)
-			.build();
+
 
 	@Test
 	public void equalSpecification_True(){
-		Specification equalSpecification = new EqualSpecification(-20,
-				Container::getTemperatureMax);
-		boolean result = equalSpecification.isSatisfiedBy(refrigeratedContainer);
+		boolean result = EQUALS_TRUE.isSatisfiedBy(FOOD_CONTAINER);
 		assertTrue(result);
 	}
 
 	@Test
 	public void equalSpecification_False(){
-		Specification equalSpecification = new EqualSpecification(-19,
-				Container::getTemperatureMax);
-		boolean result = equalSpecification.isSatisfiedBy(refrigeratedContainer);
-		assertFalse(result);
-
-		equalSpecification = new EqualSpecification(-21,
-				Container::getTemperatureMax);
-		result = equalSpecification.isSatisfiedBy(refrigeratedContainer);
+		boolean result = EQUALS_FALSE.isSatisfiedBy(FOOD_CONTAINER);
 		assertFalse(result);
 	}
 
 	@Test
 	public void greaterThanOrEqualToSpecification_True(){
-		Specification equalSpecification = new GreaterThanOrEqualToSpecification(-20,
-				Container::getTemperatureMax);
-		boolean result = equalSpecification.isSatisfiedBy(refrigeratedContainer);
+		boolean result = SampleDataTestCase.GREATER_THAN_19.isSatisfiedBy(FOOD_CONTAINER);
 		assertTrue(result);
-
-		equalSpecification = new GreaterThanOrEqualToSpecification(-21,
-				Container::getTemperatureMax);
-		result = equalSpecification.isSatisfiedBy(refrigeratedContainer);
+		result = GREATER_THAN_20.isSatisfiedBy(FOOD_CONTAINER);
 		assertTrue(result);
 	}
 
 	@Test
 	public void greaterThanOrEqualToSpecification_False(){
-		Specification equalSpecification = new GreaterThanOrEqualToSpecification(-19,
-				Container::getTemperatureMax);
-		boolean result = equalSpecification.isSatisfiedBy(refrigeratedContainer);
+		boolean result = GREATER_THAN_21.isSatisfiedBy(FOOD_CONTAINER);
 		assertFalse(result);
 	}
 
 	@Test
 	public void lessThanOrEqualToSpecification_True(){
-		Specification equalSpecification = new LessThanOrEqualToSpecification(-20,
-				Container::getTemperatureMax);
-		boolean result = equalSpecification.isSatisfiedBy(refrigeratedContainer);
+		boolean result = LESS_THAN_21.isSatisfiedBy(FOOD_CONTAINER);
 		assertTrue(result);
-
-		equalSpecification = new LessThanOrEqualToSpecification(-19,
-				Container::getTemperatureMax);
-		result = equalSpecification.isSatisfiedBy(refrigeratedContainer);
+		result = LESS_THAN_20.isSatisfiedBy(FOOD_CONTAINER);
 		assertTrue(result);
 	}
 
 	@Test
 	public void lessThanOrEqualToSpecification_False(){
-		Specification equalSpecification = new LessThanOrEqualToSpecification(-21,
-				Container::getTemperatureMax);
-		boolean result = equalSpecification.isSatisfiedBy(refrigeratedContainer);
+		boolean result = LESS_THAN_19.isSatisfiedBy(FOOD_CONTAINER);
 		assertFalse(result);
 	}
 }

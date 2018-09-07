@@ -1,25 +1,42 @@
 package com.mabellou.specification.composite;
 
 import com.mabellou.specification.Container;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Set;
 
+//TODO well formated name
+//TODO change output string
+//TODO generics
 public interface Specification {
-	boolean isSatisfiedBy(Container container);
 	boolean test(Container container);
-	Set<Specification>  getUnsatisfiedSpecificationsFor(Container container);
-	Set<Specification>  getSatisfiedSpecificationsFor(Container container);
-	String write(Container container);
 
 	default Specification and(Specification andSpecification){
-		return new ConjunctionSpecification(this, andSpecification);
+		return ConjunctionSpecification.of(this, andSpecification);
 	}
-
 	default Specification or(Specification orSpecification){
-		return new DisjunctionSpecification(this, orSpecification);
+		return DisjunctionSpecification.of(this, orSpecification);
+	}
+	default Specification negate(){
+		return NegationSpecification.of(this);
 	}
 
-	default Specification negate(){
-		return new NegationSpecification(this);
+	Set<Specification>  getUnsatisfiedSpecificationsFor(Container container);
+	Set<Specification>  getSatisfiedSpecificationsFor(Container container);
+
+	default boolean isSpecialCaseOf(Specification specification) {
+		throw new NotImplementedException();
+	}
+	default boolean isGeneralizationOf(Specification specification) {
+		throw new NotImplementedException();
+	}
+
+	String getName();
+	Specification withName(String name);
+
+	String toString(Container container, StringFormatter formatter);
+
+	enum StringFormatter {
+		INLINE, MULTIPLE_LINE
 	}
 }

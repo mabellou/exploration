@@ -6,8 +6,12 @@ import java.util.function.Function;
 
 public class EqualSpecification extends ValueBoundSpecification {
 
-	public EqualSpecification(Integer aValue, Function<Container, Integer> aSymbol) {
+	private EqualSpecification(Integer aValue, Function<Container, Integer> aSymbol) {
 		super(aValue, aSymbol);
+	}
+
+	public static EqualSpecification of(Integer aValue, Function<Container, Integer> aSymbol){
+		return new EqualSpecification(aValue, aSymbol);
 	}
 
 	@Override
@@ -16,8 +20,8 @@ public class EqualSpecification extends ValueBoundSpecification {
 	}
 
 	@Override
-	public String write(Container container) {
-		return String.format("%d equals %d [%s]",
+	public String toString(Container container) {
+		return String.format(" %d == %d [=%s] ",
 				aSymbol.apply(container),
 				aValue,
 				isSatisfiedBy(container));

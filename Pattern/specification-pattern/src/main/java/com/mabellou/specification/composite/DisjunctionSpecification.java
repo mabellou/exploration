@@ -6,18 +6,12 @@ import java.util.List;
 
 public class DisjunctionSpecification extends CompositeSpecification {
 
-	public DisjunctionSpecification(List<Specification> specifications) {
+	private DisjunctionSpecification(Specification... specifications) {
 		super(specifications);
 	}
 
-	public DisjunctionSpecification(Specification... specification) {
-		super(specification);
-	}
-
-	@Override
-	public boolean isSatisfiedBy(Container container) {
-		return specifications.stream()
-				.anyMatch(s -> s.isSatisfiedBy(container));
+	public static DisjunctionSpecification of(Specification... specifications){
+		return new DisjunctionSpecification(specifications);
 	}
 
 	@Override
@@ -36,6 +30,32 @@ public class DisjunctionSpecification extends CompositeSpecification {
 		}
 		System.out.println("End or");
 		return orResult;
+	}
+
+	@Override
+	public boolean isSpecialCaseOf(Specification specification) {
+		return specifications.stream().allMatch(s -> s.isSpecialCaseOf(specification));
+	}
+
+	@Override
+	public boolean isGeneralizationOf(Specification specification) {
+		return specifications.stream().anyMatch(s -> s.isGeneralizationOf(specification));
+	}
+
+	@Override
+	public String getText(Container container) {
+		StringBuilder text = new StringBuilder();
+		boolean first = true;
+		for(Specification specification: specifications){
+			if(!first){
+				text.append(" || ");
+			}
+			first = false;
+			text.append("(");
+			text.append(specification.getText(container));
+			text.append(")");
+		}
+		return text.toString();
 	}
 
 	@Override

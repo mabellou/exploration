@@ -1,23 +1,18 @@
 package com.mabellou.specification.composite;
 
 import com.mabellou.specification.Container;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
 public class ConjunctionSpecification extends CompositeSpecification  {
 
-	public ConjunctionSpecification(List<Specification> specifications) {
+	private ConjunctionSpecification(Specification... specifications) {
 		super(specifications);
 	}
 
-	public ConjunctionSpecification(Specification... specification) {
-		super(specification);
-	}
-
-	@Override
-	public boolean isSatisfiedBy(Container container) {
-		return specifications.stream()
-				.allMatch(s -> s.isSatisfiedBy(container));
+	public static ConjunctionSpecification of(Specification... specifications){
+		return new ConjunctionSpecification(specifications);
 	}
 
 	@Override
@@ -39,7 +34,28 @@ public class ConjunctionSpecification extends CompositeSpecification  {
 	}
 
 	@Override
-	public String write(Container container) {
-		return "And";
+	public boolean isSpecialCaseOf(Specification specification) {
+		return specifications.stream().anyMatch(s -> s.isSpecialCaseOf(specification));
+	}
+
+	@Override
+	public boolean isGeneralizationOf(Specification specification) {
+		return specifications.stream().allMatch(s -> s.isGeneralizationOf(specification));
+	}
+
+	@Override
+	public String toString(Container container, StringFormatter formatter) {
+		StringBuilder text = new StringBuilder();
+		boolean first = true;
+		for(Specification specification: specifications){
+			if(!first){
+				text.append(" && ");
+			}
+			first = false;
+			text.append("(");
+			text.append(specification.getText(container));
+			text.append(")");
+		}
+		return text.toString();
 	}
 }

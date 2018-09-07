@@ -7,8 +7,12 @@ import java.util.function.Function;
 public class GreaterThanOrEqualToSpecification extends ValueBoundSpecification {
 
 
-	public GreaterThanOrEqualToSpecification(Integer aValue, Function<Container, Integer> aSymbol) {
+	private GreaterThanOrEqualToSpecification(Integer aValue, Function<Container, Integer> aSymbol) {
 		super(aValue, aSymbol);
+	}
+
+	public static GreaterThanOrEqualToSpecification of(Integer aValue, Function<Container, Integer> aSymbol){
+		return new GreaterThanOrEqualToSpecification(aValue, aSymbol);
 	}
 
 	@Override
@@ -16,8 +20,25 @@ public class GreaterThanOrEqualToSpecification extends ValueBoundSpecification {
 		return aSymbol.apply(container) >= aValue;
 	}
 
-	public String write(Container container) {
-		return String.format("%d isGreaterThanOrEqual %d [%s]",
+	@Override
+	public boolean isGeneralizationOf(Specification specification) {
+		if(!(specification instanceof GreaterThanOrEqualToSpecification)){
+			throw new IllegalArgumentException("It must be a GreaterThanOrEqualToSpecification specification");
+		}
+		return aValue <= ((GreaterThanOrEqualToSpecification) specification).aValue;
+	}
+
+	@Override
+	public boolean isSpecialCaseOf(Specification specification) {
+		if(!(specification instanceof GreaterThanOrEqualToSpecification)){
+			throw new IllegalArgumentException("It must be a GreaterThanOrEqualToSpecification specification");
+		}
+		return aValue >= ((GreaterThanOrEqualToSpecification) specification).aValue;
+	}
+
+	@Override
+	public String toString(Container container) {
+		return String.format(" %d >= %d [%s] ",
 				aSymbol.apply(container),
 				aValue,
 				isSatisfiedBy(container));

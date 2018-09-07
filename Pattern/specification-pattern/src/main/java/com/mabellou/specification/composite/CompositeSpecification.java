@@ -6,23 +6,13 @@ import java.util.*;
 
 public abstract class CompositeSpecification implements Specification {
 	protected List<Specification> specifications;
+	protected String name = "";
 
-	public CompositeSpecification(Specification... specifications) {
+	protected CompositeSpecification(Specification... specifications) {
 		this.specifications = Arrays.asList(specifications);
 	}
 
-	public CompositeSpecification(List<Specification> specifications) {
-		this.specifications = specifications;
-	}
-
-	public void addSpecification(Specification specification) {
-		this.specifications.add(specification);
-	}
-
-	public void addSpecifications(List<Specification> specifications) {
-		this.specifications.addAll(specifications);
-	}
-
+	@Override
 	public Set<Specification> getUnsatisfiedSpecificationsFor(final Container container) {
 		Set<Specification> unsatisfied = new HashSet<>();
 		for (Specification specification : specifications) {
@@ -31,11 +21,23 @@ public abstract class CompositeSpecification implements Specification {
 		return Collections.unmodifiableSet(unsatisfied);
 	}
 
+	@Override
 	public Set<Specification> getSatisfiedSpecificationsFor(final Container container) {
 		Set<Specification> satisfied = new HashSet<>();
 		for (Specification specification : specifications) {
 			satisfied.addAll(specification.getSatisfiedSpecificationsFor(container));
 		}
 		return Collections.unmodifiableSet(satisfied);
+	}
+
+	@Override
+	public Specification withName(String name) {
+		this.name = name;
+		return this;
+	}
+
+	@Override
+	public String getName() {
+		return name;
 	}
 }

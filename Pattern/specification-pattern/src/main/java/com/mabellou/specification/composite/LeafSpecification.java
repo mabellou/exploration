@@ -1,30 +1,59 @@
 package com.mabellou.specification.composite;
 
 import com.mabellou.specification.Container;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public interface LeafSpecification extends Specification {
+public abstract class LeafSpecification implements Specification {
+	protected String name = "";
 
-	default Set<Specification> getUnsatisfiedSpecificationsFor(final Container container) {
+	protected abstract boolean isSatisfiedBy(Container container);
+
+	@Override
+	public final boolean test(Container container){
+		System.out.println(this.toString(container));
+		return this.isSatisfiedBy(container);
+	}
+
+	@Override
+	public Set<Specification> getUnsatisfiedSpecificationsFor(final Container container) {
 		Set<Specification> unsatisfied = new HashSet<>();
-		if (!this.isSatisfiedBy(container)) {
+		if (!this.test(container)) {
 			unsatisfied.add(this);
 		}
 		return unsatisfied;
 	}
 
-	default Set<Specification> getSatisfiedSpecificationsFor(final Container container) {
+	@Override
+	public Set<Specification> getSatisfiedSpecificationsFor(final Container container) {
 		Set<Specification> satisfied = new HashSet<>();
-		if (this.isSatisfiedBy(container)) {
+		if (this.test(container)) {
 			satisfied.add(this);
 		}
 		return satisfied;
 	}
 
-	default boolean test(Container container){
-		System.out.println(this.write(container));
-		return this.isSatisfiedBy(container);
+	@Override
+	public Specification withName(String name){
+		this.name = name;
+		return this;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	public abstract String toString(Container container);
+
+	@Override
+	public String toString(Container container, StringFormatter formatter) {
+		switch (formatter){
+			case INLINE: return this.toString(container);
+			case MULTIPLE_LINE: return this.toString(container);
+			default: throw new NotImplementedException();
+		}
 	}
 }

@@ -1,59 +1,38 @@
 package com.mabellou.specification.composite;
 
-import com.mabellou.specification.Container;
 import org.junit.Test;
 
-import java.util.Set;
-
+import static com.mabellou.specification.composite.SampleDataTestCase.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class OrSpecificationTest {
 
-	private Container refrigeratedContainer = Container.builder()
-			.temperatureMax(-20)
-			.temperatureMin(-30)
-			.isSanitaryForFood(true)
-			.build();
+
 
 	@Test
 	public void orSpecification_True_True(){
-		Specification equalSpecificationMax =
-				new EqualSpecification(-20, Container::getTemperatureMax);
-		Specification equalSpecificationMin =
-				new EqualSpecification(-30, Container::getTemperatureMin);
+		Specification orSpecification = IS_TRUE_1.or(IS_TRUE_2);
 
-		Specification orSpecification = equalSpecificationMax.or(equalSpecificationMin);
-
-		boolean result = orSpecification.isSatisfiedBy(refrigeratedContainer);
+		boolean result = orSpecification.isSatisfiedBy(FOOD_CONTAINER);
 
 		assertTrue(result);
 	}
 
 	@Test
 	public void orSpecification_True_False(){
-		Specification equalSpecificationMax =
-				new EqualSpecification(-20, Container::getTemperatureMax);
-		Specification equalSpecificationMin =
-				new EqualSpecification(-31, Container::getTemperatureMax);
+		Specification orSpecification = IS_TRUE_1.or(IS_FALSE_1);
 
-		Specification orSpecification = equalSpecificationMax.or(equalSpecificationMin);
-
-		boolean result = orSpecification.isSatisfiedBy(refrigeratedContainer);
+		boolean result = orSpecification.isSatisfiedBy(FOOD_CONTAINER);
 
 		assertTrue(result);
 	}
 
 	@Test
 	public void orSpecification_False_False(){
-		Specification equalSpecificationMax =
-				new EqualSpecification(-21, Container::getTemperatureMax);
-		Specification equalSpecificationMin =
-				new EqualSpecification(-31, Container::getTemperatureMax);
+		Specification orSpecification = IS_FALSE_1.or(IS_FALSE_2);
 
-		Specification orSpecification = equalSpecificationMax.or(equalSpecificationMin);
-
-		boolean result = orSpecification.isSatisfiedBy(refrigeratedContainer);
+		boolean result = orSpecification.isSatisfiedBy(FOOD_CONTAINER);
 
 		assertFalse(result);
 	}

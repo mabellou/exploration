@@ -6,8 +6,12 @@ import java.util.function.Function;
 
 public class LessThanOrEqualToSpecification extends ValueBoundSpecification {
 
-	public LessThanOrEqualToSpecification(Integer aValue, Function<Container, Integer> aSymbol) {
+	private LessThanOrEqualToSpecification(Integer aValue, Function<Container, Integer> aSymbol) {
 		super(aValue, aSymbol);
+	}
+
+	public static LessThanOrEqualToSpecification of(Integer aValue, Function<Container, Integer> aSymbol){
+		return new LessThanOrEqualToSpecification(aValue, aSymbol);
 	}
 
 	@Override
@@ -15,8 +19,25 @@ public class LessThanOrEqualToSpecification extends ValueBoundSpecification {
 		return aSymbol.apply(container) <= aValue;
 	}
 
-	public String write(Container container) {
-		return String.format("%d isLessThanOrEqual %d [%s]",
+	@Override
+	public boolean isGeneralizationOf(Specification specification) {
+		if(!(specification instanceof LessThanOrEqualToSpecification)){
+			throw new IllegalArgumentException("It must be a LessThanOrEqualToSpecification specification");
+		}
+		return aValue >= ((LessThanOrEqualToSpecification) specification).aValue;
+	}
+
+	@Override
+	public boolean isSpecialCaseOf(Specification specification) {
+		if(!(specification instanceof LessThanOrEqualToSpecification)){
+			throw new IllegalArgumentException("It must be a LessThanOrEqualToSpecification specification");
+		}
+		return aValue <= ((LessThanOrEqualToSpecification) specification).aValue;
+	}
+
+	@Override
+	public String toString(Container container) {
+		return String.format(" %d <= %d [%s] ",
 				aSymbol.apply(container),
 				aValue,
 				isSatisfiedBy(container));
