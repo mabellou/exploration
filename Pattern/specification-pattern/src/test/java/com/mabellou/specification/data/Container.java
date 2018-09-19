@@ -1,4 +1,4 @@
-package com.mabellou.specification;
+package com.mabellou.specification.data;
 
 public class Container {
 	private Integer temperatureMax;

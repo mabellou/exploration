@@ -1,8 +1,9 @@
-package com.mabellou.specification.composite;
+package com.mabellou.specification;
 
+import com.mabellou.specification.data.SampleDataTestCase;
 import org.junit.Test;
 
-import static com.mabellou.specification.composite.SampleDataTestCase.*;
+import static com.mabellou.specification.data.SampleDataTestCase.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

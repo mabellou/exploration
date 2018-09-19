@@ -1,40 +1,32 @@
-package com.mabellou.specification.composite;
+package com.mabellou.specification;
 
-import com.mabellou.specification.Container;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
-import static com.mabellou.specification.composite.Specification.StringFormatter.INLINE;
-import static com.mabellou.specification.composite.Specification.StringFormatter.MULTIPLE_LINE;
+public class DisjunctionSpecification<T> extends CompositeSpecification<T> {
 
-public class DisjunctionSpecification extends CompositeSpecification {
-
-	private DisjunctionSpecification(Specification... specifications) {
+	public DisjunctionSpecification(List<Specification<T>> specifications) {
 		super(specifications);
 	}
 
-	public static DisjunctionSpecification of(Specification... specifications){
-		return new DisjunctionSpecification(specifications);
+	@Override
+	public boolean isSatisfiedBy(T t) {
+		return specifications.stream().anyMatch(s -> s.isSatisfiedBy(t));
 	}
 
 	@Override
-	public boolean isSatisfiedBy(Container container) {
-		return specifications.stream().anyMatch(s -> s.isSatisfiedBy(container));
-	}
-
-	@Override
-	public boolean test(Container container) {
+	public boolean test(T t) {
 		boolean orResult = false;
 		boolean tempResult;
 		boolean first = true;
 		System.out.println("Begin or");
-		for(Specification specification: specifications){
+		for(Specification<T> specification: specifications){
 			if(!first){
 				System.out.println("Or");
 			}
 			first = false;
-			tempResult = specification.test(container);
+			tempResult = specification.test(t);
 			orResult = orResult || tempResult;
 		}
 		System.out.println("End or");
@@ -52,45 +44,45 @@ public class DisjunctionSpecification extends CompositeSpecification {
 	}
 
 	@Override
-	public String toString(Container container, StringFormatter formatter) {
+	public String toString(T t, StringFormatter formatter) {
 		switch (formatter) {
 			case INLINE:
-				return toStringInline(container);
+				return toStringInline(t);
 			case MULTIPLE_LINE:
-				return toStringMultipleLine(container);
+				return toStringMultipleLine(t);
 			default:
 				throw new NotImplementedException();
 		}
 	}
 
-	private String toStringInline(Container container) {
+	private String toStringInline(T t) {
 		StringBuilder text = new StringBuilder();
 		boolean first = true;
-		for(Specification specification: specifications){
+		for(Specification<T> specification: specifications){
 			if(!first){
 				text.append(" || ");
 			}
 			first = false;
 			text.append("(");
-			text.append(specification.toString(container, INLINE));
+			text.append(specification.toString(t, StringFormatter.INLINE));
 			text.append(")");
 		}
 		return text.toString();
 	}
 
-	private String toStringMultipleLine(Container container) {
+	private String toStringMultipleLine(T t) {
 		StringBuilder text = new StringBuilder();
 		boolean orResult = false;
 		boolean tempResult;
 		boolean first = true;
 		text.append("Begin or").append(name).append(System.lineSeparator());
-		for(Specification specification: specifications){
+		for(Specification<T> specification: specifications){
 			if(!first){
 				text.append("Or").append(System.lineSeparator());
 			}
 			first = false;
-			tempResult = specification.isSatisfiedBy(container);
-			text.append(specification.toString(container, MULTIPLE_LINE));
+			tempResult = specification.isSatisfiedBy(t);
+			text.append(specification.toString(t, StringFormatter.MULTIPLE_LINE));
 			orResult = orResult || tempResult;
 		}
 		text.append(String.format("End or [=%s]", orResult)).append(System.lineSeparator());

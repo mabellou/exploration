@@ -1,23 +1,21 @@
-package com.mabellou.specification.composite;
-
-import com.mabellou.specification.Container;
+package com.mabellou.specification;
 
 import java.util.function.Function;
 
-public class GreaterThanOrEqualToSpecification extends ValueBoundSpecification {
+public class GreaterThanOrEqualToSpecification<T> extends ValueBoundSpecification<T> {
 
 
-	private GreaterThanOrEqualToSpecification(Integer aValue, Function<Container, Integer> aSymbol) {
+	public GreaterThanOrEqualToSpecification(Integer aValue, Function<T, Integer> aSymbol) {
 		super(aValue, aSymbol);
 	}
 
-	public static GreaterThanOrEqualToSpecification of(Integer aValue, Function<Container, Integer> aSymbol){
-		return new GreaterThanOrEqualToSpecification(aValue, aSymbol);
+	public static <T> GreaterThanOrEqualToSpecification<T> of(Integer aValue, Function<T, Integer> aSymbol){
+		return new GreaterThanOrEqualToSpecification<>(aValue, aSymbol);
 	}
 
 	@Override
-	public boolean isSatisfiedBy(Container container) {
-		return aSymbol.apply(container) >= aValue;
+	public boolean isSatisfiedBy(T t) {
+		return aSymbol.apply(t) >= aValue;
 	}
 
 	@Override
@@ -37,10 +35,10 @@ public class GreaterThanOrEqualToSpecification extends ValueBoundSpecification {
 	}
 
 	@Override
-	public String toString(Container container) {
+	public String toString(T t) {
 		return String.format(" %d >= %d [%s] ",
-				aSymbol.apply(container),
+				aSymbol.apply(t),
 				aValue,
-				isSatisfiedBy(container));
+				isSatisfiedBy(t));
 	}
 }

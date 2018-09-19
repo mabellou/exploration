@@ -1,9 +1,10 @@
-package com.mabellou.specification.composite;
+package com.mabellou.specification;
 
+import com.mabellou.specification.data.Container;
 import org.junit.Test;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import static com.mabellou.specification.composite.SampleDataTestCase.*;
+import static com.mabellou.specification.data.SampleDataTestCase.*;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
@@ -11,13 +12,13 @@ public class SubsumptionSpecificationTest {
 
 	@Test(expected = NotImplementedException.class)
 	public void isSpecialCaseOf_Negate(){
-		Specification specification = NegationSpecification.of(IS_TRUE_1);
+		Specification<Container> specification = NegationSpecification.of(IS_TRUE_1);
 		specification.isSpecialCaseOf(IS_FALSE_1);
 	}
 
 	@Test(expected = NotImplementedException.class)
 	public void isGeneralizationOf_Negate(){
-		Specification specification = NegationSpecification.of(IS_TRUE_1);
+		Specification<Container> specification = NegationSpecification.of(IS_TRUE_1);
 		specification.isGeneralizationOf(IS_FALSE_1);
 	}
 
@@ -66,7 +67,7 @@ public class SubsumptionSpecificationTest {
 
 	@Test
 	public void isSpecialCaseOf_And(){
-		Specification andSpecification = GREATER_THAN_18.and(GREATER_THAN_20);
+		Specification<Container> andSpecification = GREATER_THAN_18.and(GREATER_THAN_20);
 		boolean result = andSpecification.isSpecialCaseOf(GREATER_THAN_19);
 		assertTrue(result);
 		result = andSpecification.isSpecialCaseOf(GREATER_THAN_21);
@@ -75,7 +76,7 @@ public class SubsumptionSpecificationTest {
 
 	@Test
 	public void isGeneralizationOf_And(){
-		Specification andSpecification = GREATER_THAN_18.and(GREATER_THAN_20);
+		Specification<Container> andSpecification = GREATER_THAN_18.and(GREATER_THAN_20);
 		boolean result = andSpecification.isGeneralizationOf(GREATER_THAN_21);
 		assertTrue(result);
 		result = andSpecification.isGeneralizationOf(GREATER_THAN_19);
@@ -84,7 +85,7 @@ public class SubsumptionSpecificationTest {
 
 	@Test
 	public void isSpecialCaseOf_Or(){
-		Specification orSpecification = GREATER_THAN_19.or(GREATER_THAN_21);
+		Specification<Container> orSpecification = GREATER_THAN_19.or(GREATER_THAN_21);
 		boolean result = orSpecification.isSpecialCaseOf(GREATER_THAN_18);
 		assertTrue(result);
 		result = orSpecification.isSpecialCaseOf(GREATER_THAN_20);
@@ -93,7 +94,7 @@ public class SubsumptionSpecificationTest {
 
 	@Test
 	public void isGeneralizationOf_Or(){
-		Specification orSpecification = GREATER_THAN_19.or(GREATER_THAN_21);
+		Specification<Container> orSpecification = GREATER_THAN_19.or(GREATER_THAN_21);
 		boolean result = orSpecification.isGeneralizationOf(GREATER_THAN_20);
 		assertTrue(result);
 		result = orSpecification.isGeneralizationOf(GREATER_THAN_18);

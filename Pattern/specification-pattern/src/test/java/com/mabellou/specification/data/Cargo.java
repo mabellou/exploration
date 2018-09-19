@@ -1,6 +1,6 @@
-package com.mabellou.specification;
+package com.mabellou.specification.data;
 
-import com.mabellou.specification.composite.Specification;
+import com.mabellou.specification.Specification;
 
 public class Cargo {
     private final Specification specification;
